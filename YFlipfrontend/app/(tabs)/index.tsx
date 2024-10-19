@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Alert, TextInput, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Alert, TextInput, Modal, FlatList } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import axios from 'axios';  
+
+const GOOGLE_API_KEY = 'AIzaSyCtruKC5kdS_wG1FpdDFV88_POW_kc7FVY';  
 
 // Define the file path for saving user data
 const fileUri = FileSystem.documentDirectory + 'users.json';
@@ -9,6 +12,15 @@ const fileUri = FileSystem.documentDirectory + 'users.json';
 type User = {
   username: string;
   password: string;
+};
+
+type LabelAnnotation = {
+  description: string;
+  score: number;
+};
+
+type GoogleVisionResponse = {
+  labelAnnotations: LabelAnnotation[];
 };
 
 export default function App() {
@@ -21,10 +33,11 @@ export default function App() {
 
 function Index() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [labels, setLabels] = useState<LabelAnnotation[]>([]);  // Properly typed labels array
   const [modalVisible, setModalVisible] = useState(false); // Control modal visibility
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between login and sign-up
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState(''); // Username for Signup
+  const [password, setPassword] = useState(''); // Password for Login
   const [confirmPassword, setConfirmPassword] = useState(''); // For sign-up form
   const [users, setUsers] = useState<User[]>([]); // Store user data
 
@@ -143,12 +156,52 @@ function Index() {
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
       setSelectedImage(result.assets[0].uri); // Set the image URI
+
+      // Convert image to base64 and send to Google Vision API
+      const base64Image = await FileSystem.readAsStringAsync(result.assets[0].uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      analyzeImageWithGoogleVision(base64Image);
     }
   };
 
   const removeImage = () => {
     setSelectedImage(null);
+    setLabels([]);  // Clear the labels when image is removed
     alert('Image removed!');
+  };
+
+  // Function to send the image to Google Vision API
+  const analyzeImageWithGoogleVision = async (base64Image: string) => {
+    const url = `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_API_KEY}`;
+    const body = {
+      requests: [
+        {
+          image: {
+            content: base64Image,  // Base64-encoded image
+          },
+          features: [
+            {
+              type: "LABEL_DETECTION",  // We are performing label detection
+              maxResults: 10,
+            },
+          ],
+        },
+      ],
+    };
+
+    try {
+      const response = await axios.post(url, body, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      // Extract and set labels from the response
+      const detectedLabels = response.data.responses[0].labelAnnotations || [];
+      setLabels(detectedLabels);
+    } catch (error) {
+      console.error('Error with Google Vision API:', error);
+      Alert.alert('Error', 'Something went wrong with the Vision API.');
+    }
   };
 
   return (
@@ -181,6 +234,20 @@ function Index() {
           <Image source={{ uri: selectedImage }} style={styles.imageBox} />
         ) : (
           <Text style={styles.placeholder}>No image uploaded</Text>
+        )}
+
+        {/* Show labels detected by Google Vision */}
+        {labels.length > 0 && (
+          <FlatList
+            data={labels}
+            keyExtractor={(item) => item.description}
+            renderItem={({ item }) => (
+              <View style={styles.result}>
+                <Text>{item.description}</Text>
+                <Text>Confidence: {(item.score * 100).toFixed(2)}%</Text>
+              </View>
+            )}
+          />
         )}
       </View>
 
@@ -406,5 +473,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  result: {
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginVertical: 10,
   },
 });
