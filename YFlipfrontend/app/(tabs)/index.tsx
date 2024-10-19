@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function Index() {
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Index />
+    </View>
+  );
+}
+
+function Index() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   // Function to handle image selection from the gallery or camera
@@ -14,13 +22,12 @@ export default function Index() {
         { text: 'Cancel', style: 'cancel' },
         { text: 'Take a Photo', onPress: () => uploadImage('camera') },
         { text: 'Pick from Gallery', onPress: () => uploadImage('gallery') },
-        { text: 'Remove Image', onPress: removeImage, style: 'destructive' },  // To remove image
+        { text: 'Remove Image', onPress: removeImage, style: 'destructive' },
       ],
       { cancelable: true }
     );
   };
 
-  // Function to handle uploading from camera or gallery
   const uploadImage = async (mode: 'camera' | 'gallery') => {
     let result;
 
@@ -51,13 +58,11 @@ export default function Index() {
       });
     }
 
-    // Check if the user didn't cancel the image selection and if there's an asset
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      setSelectedImage(result.assets[0].uri);  // Set the URI of the selected image
+      setSelectedImage(result.assets[0].uri);  // Correctly set the URI of the selected image
     }
   };
 
-  // Function to remove the uploaded image
   const removeImage = () => {
     setSelectedImage(null);
     alert('Image removed!');
@@ -65,16 +70,36 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Capture or Upload Image</Text>
+      {/* Top Colored Section */}
+      <View style={styles.topSection}>
+        <TouchableOpacity style={styles.iconButtonLeft}>
+          <Text style={styles.iconText}>☰</Text>
+        </TouchableOpacity>
 
-      {/* Show selected image or placeholder */}
-      {selectedImage ? (
-        <Image source={{ uri: selectedImage }} style={styles.image} />
-      ) : (
-        <Text style={styles.placeholder}>No image uploaded</Text>
-      )}
+        <TouchableOpacity style={styles.iconButtonRight}>
+          <View style={styles.iconCircle}>
+            <Text style={styles.iconTextRight}>○</Text>
+          </View>
+        </TouchableOpacity>
 
-      {/* Bottom Bar */}
+        <Text style={styles.topText}>Welcome to YardFlip!</Text>
+      </View>
+
+      <View style={styles.curve} />
+
+      {/* Main Content */}
+      <View style={styles.mainContent}>
+        <Text style={styles.title}>Capture or Upload Image</Text>
+
+        {/* Show selected image or placeholder */}
+        {selectedImage ? (
+          <Image source={{ uri: selectedImage }} style={styles.imageBox} />  // Display the image here
+        ) : (
+          <Text style={styles.placeholder}>No image uploaded</Text>
+        )}
+      </View>
+
+      {/* Bottom Bar with Rounded Top Corners */}
       <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.button} onPress={handleImagePicker}>
           <Text style={styles.buttonText}>Upload / Capture Image</Text>
@@ -87,10 +112,68 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f9f9f9',
+  },
+  topSection: {
+    height: 180,
+    backgroundColor: '#FFC0CB',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  topText: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  iconButtonLeft: {
+    position: 'absolute',
+    left: 20,
+    top: 40,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconButtonRight: {
+    position: 'absolute',
+    right: 20,
+    top: 40,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconCircle: {
+    backgroundColor: '#fff',
+    borderRadius: 25,
+    width: 32,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  iconTextRight: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  curve: {
+    height: 50,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
+    marginTop: -50,
+  },
+  mainContent: {
+    flex: 1,
+    backgroundColor: '#fff',
     padding: 20,
-    backgroundColor: '#f9f9f9',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -98,11 +181,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#333',
   },
-  image: {
+  imageBox: {
     width: 300,
     height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 10,
     marginBottom: 20,
+    backgroundColor: '#f0f0f0',
   },
   placeholder: {
     fontSize: 18,
@@ -115,9 +201,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 80,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FF69B4',
     justifyContent: 'center',
     alignItems: 'center',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
   button: {
     paddingVertical: 15,
@@ -126,7 +214,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   buttonText: {
-    color: '#007AFF',
+    color: '#FF69B4',
     fontSize: 18,
     fontWeight: 'bold',
   },
