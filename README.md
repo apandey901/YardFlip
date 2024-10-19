@@ -6,5 +6,5 @@ Creating React Native Environment:
 2. Create account and verify account
 3. Install Node and npm
 4. Check node and npm version: \
-$npm --version
+$npm --version\
 $node --version
