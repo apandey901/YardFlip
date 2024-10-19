@@ -156,7 +156,7 @@ function Index() {
       {/* Top Colored Section */}
       <View style={styles.topSection}>
         <TouchableOpacity style={styles.iconButtonLeft}>
-          <Text>☰</Text>
+          <Text style={styles.iconText}>☰</Text>
         </TouchableOpacity>
 
         {/* Login button with profile icon */}
@@ -288,10 +288,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 20,
     top: 40,
-    width: 50,
-    height: 50,
+    width: 50,  // Adjust width
+    height: 50, // Adjust height
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  iconText: {
+    fontSize: 40, // Increase this number to make the ☰ symbol bigger
+    color: 'black',
   },
   iconButtonRight: {
     position: 'absolute',
