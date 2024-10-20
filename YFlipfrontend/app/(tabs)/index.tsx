@@ -278,23 +278,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFC0CB',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 30, // Adjust for moving the text slightly higher
   },
   topText: {
     color: '#fff',
     fontSize: 24,
     fontWeight: 'bold',
+    marginTop: -80, // Moves text slightly higher
   },
   iconButtonLeft: {
     position: 'absolute',
     left: 20,
     top: 40,
-    width: 50,  // Adjust width
-    height: 50, // Adjust height
+    width: 50,
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
   iconText: {
-    fontSize: 40, // Increase this number to make the ☰ symbol bigger
+    fontSize: 40, 
     color: 'black',
   },
   iconButtonRight: {
