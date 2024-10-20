@@ -174,7 +174,7 @@ function Index() {
 
   // Function to send the image to Google Vision API
   const analyzeImageWithGoogleVision = async (base64Image: string) => {
-    const url = `https://vision.googleapis.com/v1/images:annotate?key=${process.env.GOOGLE_API_KEY}`;
+    const url = `https://vision.googleapis.com/v1/images:annotate?key=${googleAPIKey}`;
     const body = {
       requests: [
         {
