@@ -104,7 +104,7 @@ The Data API is responsible for retrieving and managing application data. This c
 
 ### 3. **Third-Party API Integrations**
 
-YardFlip also interacts with external APIs, such as weather services or geolocation. These integrations follow the same modular design, allowing easy replacement or updates in the future. API keys and sensitive data are securely stored using environment variables in the `.env` file.
+YardFlip also interacts with external APIs, such as weather services or geolocation. These integrations follow the same modular design, allowing easy replacement or updates in the future. API keys and sensitive data are securely stored using environment variables in the `app.json` file.
 
 ### Error Handling
 
