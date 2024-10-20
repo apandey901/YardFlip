@@ -12,9 +12,6 @@ YardFlip is a React Native project focused on building a cross-platform mobile a
 - [API Documentation](#api-documentation)
 - [Testing](#testing)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Future Plans](#future-plans)
 
 ## Introduction
 
