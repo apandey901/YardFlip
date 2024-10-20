@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, Alert, TextInput, Moda
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';  
+import Constants from "expo-constants";
 
-require('dotenv').config()
+const googleAPIKey = Constants?.expoConfig?.extra?.googleAPIKey;
 
 // Define the file path for saving user data
 const fileUri = FileSystem.documentDirectory + 'users.json';
