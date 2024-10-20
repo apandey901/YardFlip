@@ -128,32 +128,15 @@ Tests are located in the `tests/` directory and include unit tests for core serv
 The directory layout is designed to support scalability and maintainability:
 
 ```
-├── src/
-│   ├── assets/        # Static files like images, fonts
-│   ├── components/    # Reusable UI components
-│   ├── screens/       # App screens
-│   ├── services/      # API interaction and external service handling
-│   ├── utils/         # Helper functions and constants
-├── tests/             # Unit and integration tests
-├── App.tsx            # App entry point
-└── README.md          # Project documentation
+├── app/                # Main folder containing app structure
+│   ├── (tabs)/         # Tab-based components
+│   │   ├── _layout.tsx  # Layout file for tab navigation
+│   │   ├── explore.tsx  # Explore tab content
+│   │   └── index.tsx    # Index tab content
+│   ├── _layout.tsx      # Layout file for app navigation
+│   ├── _html.tsx        # HTML structure definition (if applicable)
+├── .expo/              # Expo-related configurations
+└── README.md           # Project documentation
 ```
 
-## Contributing
 
-We welcome contributions! Please follow these steps:
-
-1. **Fork the repository**.
-2. **Create a feature branch**: `git checkout -b feature/your-feature`.
-3. **Commit your changes**: Use clear commit messages.
-4. **Push to your branch**: `git push origin feature/your-feature`.
-5. **Submit a pull request**.
-
-Before submitting, ensure all tests pass and your code follows the coding standards.
-
-## Future Plans
-
-- **Firebase Integration**: Implement Firebase for real-time database interactions.
-- **UI/UX Enhancements**: Refine the design and accessibility of the app.
-- **Offline Support**: Enable offline functionality with local caching.
-- **Expanded Testing**: Add end-to-end tests using Detox.
