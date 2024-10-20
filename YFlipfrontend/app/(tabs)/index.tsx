@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';  
 
-const GOOGLE_API_KEY = 'AIzaSyCtruKC5kdS_wG1FpdDFV88_POW_kc7FVY';  
+require('dotenv').config()
 
 // Define the file path for saving user data
 const fileUri = FileSystem.documentDirectory + 'users.json';
@@ -173,7 +173,7 @@ function Index() {
 
   // Function to send the image to Google Vision API
   const analyzeImageWithGoogleVision = async (base64Image: string) => {
-    const url = `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_API_KEY}`;
+    const url = `https://vision.googleapis.com/v1/images:annotate?key=${process.env.GOOGLE_API_KEY}`;
     const body = {
       requests: [
         {
